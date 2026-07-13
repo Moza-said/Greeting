@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Greeting Banner</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    font-family: 'Segoe UI', 'Segoe UI Web', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .banner {
+    background: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    padding: 20px 28px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: #6b6b6b;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .greeting-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #eef1f5;
+    padding: 8px 14px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+
+  .greeting-text {
+    font-size: 28px;
+    font-weight: 700;
+    color: #242424;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .wave {
+    font-size: 26px;
+    display: inline-block;
+    animation: wave-anim 1.6s infinite;
+    transform-origin: 70% 70%;
+  }
+
+  @keyframes wave-anim {
+    0% { transform: rotate(0deg); }
+    10% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    30% { transform: rotate(14deg); }
+    40% { transform: rotate(-4deg); }
+    50% { transform: rotate(10deg); }
+    60% { transform: rotate(0deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .date-line {
+    font-size: 13px;
+    color: #6b6b6b;
+  }
+
+  .date-line .dot {
+    margin: 0 6px;
+  }
+
+  @media (max-width: 480px) {
+    .greeting-text { font-size: 20px; }
+    .wave { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="banner">
+    <div class="eyebrow">Welcome back</div>
+    <div class="greeting-row">
+      <p class="greeting-text" id="greeting-text">Good morning, there</p>
+      <span class="wave">👋</span>
+    </div>
+    <div class="date-line" id="date-line"></div>
+  </div>
+
+  <script>
+    // Optional: replace "there" with a real name, e.g. from SharePoint context
+    var userName = "there"; // <-- set dynamically if desired
+
+    function getGreeting() {
+      var hour = new Date().getHours();
+      if (hour < 12) return "Good morning";
+      if (hour < 17) return "Good afternoon";
+      return "Good evening";
+    }
+
+    function getWeekNumber(d) {
+      d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+      var dayNum = d.getUTCDay() || 7;
+      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+      var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    }
+
+    var now = new Date();
+    document.getElementById('greeting-text').textContent = getGreeting() + ", " + userName;
+
+    var options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    var dateStr = now.toLocaleDateString('en-GB', options);
+    var weekNum = getWeekNumber(now);
+    document.getElementById('date-line').innerHTML =
+      dateStr + '<span class="dot">·</span>Week ' + weekNum;
+  </script>
+
+</body>
+</html>
